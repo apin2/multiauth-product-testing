@@ -42,9 +42,15 @@ class AdminAuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
+        $remember = $request->filled('remember');
 
-        if (Auth::guard('admin')->attempt($credentials)) {
-            Auth::guard('admin')->user()->update(['is_online' => true]);
+        if (Auth::guard('admin')->attempt($credentials, $remember)) {
+            $admin = Auth::guard('admin')->user();
+            if ($admin) {
+                $admin->is_online = true;
+                $admin->save();
+            }
+            
             return redirect()->route('admin.dashboard');
         }
 
@@ -53,14 +59,25 @@ class AdminAuthController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $totalCustomers = \App\Models\Customer::count();
+        
+        return view('admin.dashboard', compact('totalCustomers'));
     }
 
     public function logout()
     {
-        Auth::guard('admin')->user()->update(['is_online' => false]);
+        $admin = Auth::guard('admin')->user();
+        if ($admin) {
+            $admin->is_online = false;
+            $admin->save();
+        }
         Auth::guard('admin')->logout();
 
-        return redirect()->route('admin.login');
+        $response = redirect()->route('admin.login');
+        $response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+        $response->headers->set('Pragma', 'no-cache');
+        $response->headers->set('Expires', 'Thu, 01 Jan 1970 00:00:01 GMT');
+        
+        return $response;
     }
 }

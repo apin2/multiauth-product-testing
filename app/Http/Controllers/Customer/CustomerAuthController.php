@@ -32,6 +32,7 @@ class CustomerAuthController extends Controller
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
+            'is_active' => false,
         ]);
 
         Auth::guard('customer')->login($customer);
@@ -41,8 +42,22 @@ class CustomerAuthController extends Controller
 
     public function login(Request $request)
     {
-        if (Auth::guard('customer')->attempt($request->only('email', 'password'))) {
-            Auth::guard('customer')->user()->update(['is_online' => true]);
+        $credentials = $request->only('email', 'password');
+        $remember = $request->filled('remember');
+
+        if (Auth::guard('customer')->attempt($credentials, $remember)) {
+            $customer = Auth::guard('customer')->user();
+            
+            if ($customer && !$customer->is_active) {
+                Auth::guard('customer')->logout();
+                return back()->withErrors(['email' => 'Your account is inactive. Please contact admin to activate your account.']);
+            }
+            
+            if ($customer) {
+                $customer->is_online = true;
+                $customer->save();
+            }
+            
             return redirect()->route('customer.dashboard');
         }
 
@@ -56,9 +71,18 @@ class CustomerAuthController extends Controller
 
     public function logout()
     {
-        Auth::guard('customer')->user()->update(['is_online' => false]);
+        $customer = Auth::guard('customer')->user();
+        if ($customer) {
+            $customer->is_online = false;
+            $customer->save();
+        }
         Auth::guard('customer')->logout();
 
-        return redirect()->route('customer.login');
+        $response = redirect()->route('customer.login');
+        $response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+        $response->headers->set('Pragma', 'no-cache');
+        $response->headers->set('Expires', 'Thu, 01 Jan 1970 00:00:01 GMT');
+        
+        return $response;
     }
 }

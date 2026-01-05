@@ -14,9 +14,14 @@ class Customer extends Authenticatable
         'email',
         'password',
         'is_online',
+        'is_active',
     ];
 
     protected $hidden = [
         'password',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 }
