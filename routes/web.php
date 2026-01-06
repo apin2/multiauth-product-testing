@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductImportController;
 use App\Http\Controllers\Customer\CustomerAuthController;
 use App\Http\Controllers\Customer\ProfileController as CustomerProfileController;
 
@@ -37,12 +38,18 @@ Route::prefix('admin')->group(function () {
         Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('admin.customers.update');
         Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('admin.customers.destroy');
         Route::put('/customers/{id}/toggle-status', [CustomerController::class, 'toggleStatus'])->name('admin.customers.toggle-status');
+        Route::get('/customers/status', [CustomerController::class, 'getStatus'])->name('admin.customers.status');
 
         Route::resource('products', ProductController::class)->names('admin.products');
-
     });
 });
 
+Route::middleware(['auth:admin'])->group(function () {
+
+    Route::get('products/import', [ProductImportController::class, 'create'])->name('admin.products.import');
+    Route::post('products/import', [ProductImportController::class, 'store'])->name('admin.products.import.store');
+
+});
 
 Route::prefix('customer')->group(function () {
     Route::get('/login', [CustomerAuthController::class, 'showLogin'])->name('customer.login');
@@ -50,7 +57,7 @@ Route::prefix('customer')->group(function () {
     Route::post('/login', [CustomerAuthController::class, 'login']);
     Route::post('/register', [CustomerAuthController::class, 'register']);
 
-    Route::middleware(['auth:customer', 'prevent.back.history'])->group(function () {
+    Route::middleware(['auth:customer', 'prevent.back.history', 'customer.active'])->group(function () {
         Route::get('/dashboard', [CustomerAuthController::class, 'dashboard'])->name('customer.dashboard');
         Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
 
@@ -61,4 +68,3 @@ Route::prefix('customer')->group(function () {
         Route::put('/profile/password', [CustomerProfileController::class, 'updatePassword'])->name('customer.password.update');
     });
 });
-

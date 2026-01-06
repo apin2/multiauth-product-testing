@@ -73,7 +73,7 @@ class AdminAuthController extends Controller
         }
         Auth::guard('admin')->logout();
 
-        $response = redirect()->route('admin.login');
+        $response = redirect('/');
         $response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
         $response->headers->set('Pragma', 'no-cache');
         $response->headers->set('Expires', 'Thu, 01 Jan 1970 00:00:01 GMT');

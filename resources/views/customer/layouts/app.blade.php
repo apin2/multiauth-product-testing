@@ -57,6 +57,51 @@
         .sidebar .nav-item .nav-link.active {
             background-color: rgba(255,255,255,.1);
         }
+        
+        /* Elegant pagination styling */
+        .pagination {
+            margin-top: 1rem;
+            margin-bottom: 0;
+        }
+        
+        .page-item {
+            margin: 0 0.125rem;
+        }
+        
+        .page-link {
+            border-radius: .375rem !important;
+            margin: 0 0.0625rem;
+            border: 1px solid #dee2e6;
+            color: #0d6efd;
+            background-color: #fff;
+            transition: all 0.2s ease-in-out;
+            padding: 0.375rem 0.75rem;
+        }
+        
+        .page-link:hover {
+            color: #0a58ca;
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+        }
+        
+        .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(13, 110, 253, 0.25);
+        }
+        
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+        
+        .page-link i {
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+        
         header {
             background-color: #f8f9fa;
             border-bottom: 1px solid #dee2e6;
@@ -190,6 +235,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         if (performance.navigation.type === 2) {
             location.reload(true);
@@ -226,6 +272,27 @@
                     this.style.display = 'none';
                 });
             }
+            
+            // Show SweetAlert for success/error messages
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '{{ session('success') }}',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            @endif
+            
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: '{{ session('error') }}',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            @endif
         });
     </script>
 </body>

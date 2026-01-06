@@ -27,20 +27,10 @@
                     <h5 class="card-title mb-0">Product Image</h5>
                 </div>
                 <div class="card-body text-center">
-                    @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" 
-                             alt="{{ $product->name }}" 
-                             class="img-fluid rounded shadow-sm" 
-                             style="max-height: 400px; object-fit: contain;">
-                    @else
-                        <div class="bg-light d-flex align-items-center justify-content-center" 
-                             style="height: 300px; border-radius: 0.375rem;">
-                            <div class="text-center">
-                                <i class="bi bi-image fs-1 text-muted"></i>
-                                <p class="text-muted mt-2">No Image Available</p>
-                            </div>
-                        </div>
-                    @endif
+                    <img src="{{ asset('storage/' . $product->image) }}" 
+                         alt="{{ $product->name }}" 
+                         class="img-fluid rounded shadow-sm" 
+                         style="max-height: 400px; object-fit: contain;">
                 </div>
             </div>
         </div>
@@ -73,7 +63,7 @@
                             <strong>Price:</strong>
                         </div>
                         <div class="col-sm-8">
-                            <span class="text-success fw-bold fs-5">${{ number_format($product->price, 2) }}</span>
+                            <span class="text-success fw-bold fs-5">₹{{ number_format($product->price, 2) }}</span>
                         </div>
                     </div>
                     

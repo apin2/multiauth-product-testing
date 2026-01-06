@@ -7,12 +7,30 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Event;
+use App\Events\CustomerStatusUpdated;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::all();
+        $query = Customer::query();
+        
+        // Apply search filter
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+        
+        // Get perPage value from request with validation
+        $allowedPerPage = [10, 25, 50, 100];
+        $perPage = in_array($request->get('perPage'), $allowedPerPage) ? $request->get('perPage') : 10;
+        
+        $customers = $query->paginate($perPage)->appends(request()->query());
+        
         return view('admin.customers.index', compact('customers'));
     }
 
@@ -34,12 +52,17 @@ class CustomerController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $isActive = $request->has('is_active') ? $request->is_active : true;
         $customer = Customer::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'is_active' => $request->has('is_active') ? $request->is_active : true,
+            'is_active' => $isActive,
+            'is_online' => false, // New customers are not online initially
         ]);
+        
+        // Broadcast the status update
+        event(new \App\Events\CustomerStatusUpdated($customer));
 
         return redirect()->route('admin.customers.index')->with('success', 'Customer created successfully');
     }
@@ -74,14 +97,29 @@ class CustomerController extends Controller
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'is_active' => $request->has('is_active') ? $request->is_active : false,
         ];
-
+        
+        // Handle is_active field separately to manage online status
+        if ($request->has('is_active')) {
+            $newActiveStatus = $request->is_active;
+            $data['is_active'] = $newActiveStatus;
+            
+            // If deactivating the customer, also set them as offline
+            if (!$newActiveStatus && $customer->is_online) {
+                $data['is_online'] = false;
+            }
+        }
+        
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
         }
 
         $customer->update($data);
+        
+        // Check if is_online status changed and broadcast if needed
+        if ($customer->isDirty('is_online')) {
+            event(new \App\Events\CustomerStatusUpdated($customer));
+        }
 
         return redirect()->route('admin.customers.index')->with('success', 'Customer updated successfully');
     }
@@ -89,6 +127,10 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customer = Customer::findOrFail($id);
+        
+        // Broadcast the status update before deletion
+        event(new \App\Events\CustomerStatusUpdated($customer));
+        
         $customer->delete();
 
         return redirect()->route('admin.customers.index')->with('success', 'Customer deleted successfully');
@@ -105,8 +147,19 @@ class CustomerController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
-
-        $customer->update(['is_active' => $request->is_active]);
+        
+        // If deactivating the customer, also set them as offline
+        $newActiveStatus = $request->is_active;
+        $updateData = ['is_active' => $newActiveStatus];
+        
+        if (!$newActiveStatus && $customer->is_online) {
+            $updateData['is_online'] = false;
+        }
+        
+        $customer->update($updateData);
+        
+        // Broadcast the status update
+        event(new \App\Events\CustomerStatusUpdated($customer));
 
         return response()->json([
             'message' => 'Customer status updated successfully',
@@ -117,8 +170,29 @@ class CustomerController extends Controller
     public function toggleStatus($id)
     {
         $customer = Customer::findOrFail($id);
-        $customer->update(['is_active' => !$customer->is_active]);
+        
+        // If deactivating the customer, also set them as offline
+        $newActiveStatus = !$customer->is_active;
+        $updateData = ['is_active' => $newActiveStatus];
+        
+        if (!$newActiveStatus && $customer->is_online) {
+            $updateData['is_online'] = false;
+        }
+        
+        $customer->update($updateData);
+        
+        // Broadcast the status update
+        event(new \App\Events\CustomerStatusUpdated($customer));
 
-        return redirect()->back()->with('success', 'Customer status updated successfully');
+        return redirect()->route('admin.customers.index')->with('success', 'Customer status updated successfully');
+    }
+
+    public function getStatus()
+    {
+        $customers = Customer::select('id', 'is_online', 'is_active')->get();
+        
+        return response()->json([
+            'customers' => $customers
+        ]);
     }
 }

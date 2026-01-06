@@ -23,5 +23,6 @@ class Customer extends Authenticatable
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_online' => 'boolean',
     ];
 }

@@ -60,6 +60,52 @@
         .sidebar .nav-item .nav-link.active {
             background-color: rgba(255,255,255,.1);
         }
+        
+        /* Elegant pagination styling */
+        .pagination {
+            margin-top: 1rem;
+            margin-bottom: 0;
+        }
+        
+        .page-item {
+            margin: 0 0.125rem;
+        }
+        
+        .page-link {
+            border-radius: .375rem !important;
+            margin: 0 0.0625rem;
+            border: 1px solid #dee2e6;
+            color: #0d6efd;
+            background-color: #fff;
+            transition: all 0.2s ease-in-out;
+            padding: 0.375rem 0.75rem;
+        }
+        
+        .page-link:hover {
+            color: #0a58ca;
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+        }
+        
+        .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(13, 110, 253, 0.25);
+        }
+        
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+        
+        .page-link i {
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+        
+        
         /* Header styling for visual separation */
         header {
             background-color: #f8f9fa;
@@ -212,6 +258,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script>
         if (performance.navigation.type === 2) {
             location.reload(true);
@@ -247,6 +296,104 @@
                     sidebar.classList.remove('show');
                     this.style.display = 'none';
                 });
+            }
+            
+            // Show SweetAlert for success/error messages
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '{{ session('success') }}',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            @endif
+            
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: '{{ session('error') }}',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            @endif
+            
+            // Function for delete confirmation
+            function confirmDelete(id) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You won\'t be able to revert this!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('delete-form-' + id).submit();
+                    }
+                });
+            }
+            
+            // Function for toggle status confirmation
+            function confirmToggle(formElement, customerId) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Do you want to change the customer status?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, change it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Temporarily update the status indicator to show immediate feedback
+                        const statusIndicator = document.getElementById(`status-indicator-${customerId}`);
+                        const statusText = document.getElementById(`status-text-${customerId}`);
+                        
+                        if (statusIndicator && statusText) {
+                            // Find the button to get current status
+                            const button = formElement.querySelector('button');
+                            const currentStatus = button.getAttribute('data-current-status');
+                            
+                            if (currentStatus === 'active') {
+                                // Changing from active to inactive, likely going offline
+                                statusIndicator.innerHTML = '<i class="fas fa-circle text-secondary" title="Offline"></i>';
+                                statusText.textContent = 'Offline';
+                            } else {
+                                // Changing from inactive to active, status remains offline until login
+                                statusIndicator.innerHTML = '<i class="fas fa-circle text-secondary" title="Offline"></i>';
+                                statusText.textContent = 'Offline';
+                            }
+                        }
+                        
+                        formElement.submit();
+                    }
+                });
+                return false;
+            }
+            
+            // Function for product delete confirmation
+            function confirmDeleteProduct(event) {
+                event.preventDefault();
+                const form = event.target.closest('.delete-form');
+                
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You won\'t be able to revert this!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+                
+                return false;
             }
         });
     </script>

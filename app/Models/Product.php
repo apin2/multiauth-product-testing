@@ -14,4 +14,14 @@ class Product extends Model
         'category',
         'stock',
     ];
+
+    public function getImageAttribute($value)
+    {
+        // Return default image if no image is set or if the image is empty
+        if (empty($value)) {
+            return 'products/default-product.svg';
+        }
+        
+        return $value;
+    }
 }

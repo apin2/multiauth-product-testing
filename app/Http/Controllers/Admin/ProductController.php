@@ -13,7 +13,23 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::latest()->paginate(10);
+        $query = Product::query();
+        
+        // Handle search
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%")
+                  ->orWhere('description', 'LIKE', "%$search%")
+                  ->orWhere('category', 'LIKE', "%$search%");
+            });
+        }
+        
+        $perPage = request('perPage', 10);
+        $perPage = in_array($perPage, [10, 25, 50, 100]) ? $perPage : 10;
+        
+        $products = $query->latest()->paginate($perPage);
+        
         return view('admin.products.index', compact('products'));
     }
 

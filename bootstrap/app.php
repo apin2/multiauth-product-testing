@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'prevent.back.history' => \App\Http\Middleware\PreventBackHistory::class,
+            'customer.active' => \App\Http\Middleware\CheckCustomerActiveStatus::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

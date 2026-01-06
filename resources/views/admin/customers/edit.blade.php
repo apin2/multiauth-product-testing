@@ -99,7 +99,15 @@
                             <a href="{{ route('admin.customers.index') }}" class="btn btn-outline-secondary btn-lg py-3 flex-grow-1">
                                 <i class="bi bi-arrow-left me-2"></i>Back to Customers
                             </a>
+                            <button type="button" class="btn btn-danger btn-lg flex-grow-1 py-3" onclick="confirmDelete({{ $customer->id }})">
+                                <i class="bi bi-trash me-2"></i>Delete Customer
+                            </button>
                         </div>
+                        
+                        <form id="delete-form-{{ $customer->id }}" action="{{ route('admin.customers.destroy', $customer->id) }}" method="POST" class="d-none">
+                            @csrf
+                            @method('DELETE')
+                        </form>
                     </form>
                 </div>
             </div>

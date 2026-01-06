@@ -66,5 +66,32 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @if($errors->any())
+            let errorMessages = [];
+            @foreach($errors->all() as $error)
+                errorMessages.push('{{ $error }}');
+            @endforeach
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                html: errorMessages.join('<br>'),
+                showConfirmButton: true
+            });
+        @endif
+        
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}',
+                showConfirmButton: true
+            });
+        @endif
+    });
+</script>
 </body>
 </html>
