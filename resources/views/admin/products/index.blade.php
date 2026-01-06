@@ -6,9 +6,6 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">Products</h2>
         <div class="d-flex gap-2">
-            <a href="{{ route('admin.products.import') }}" class="btn btn-secondary">
-                <i class="bi bi-upload me-1"></i>Import Products
-            </a>
             <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>Add Product
             </a>

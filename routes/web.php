@@ -38,12 +38,6 @@ Route::prefix('admin')->group(function () {
         Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('admin.customers.destroy');
         Route::put('/customers/{id}/toggle-status', [CustomerController::class, 'toggleStatus'])->name('admin.customers.toggle-status');
 
-        Route::get('products/import', [ProductController::class, 'showImportForm'])
-        ->name('admin.products.import');
-        
-        Route::post('products/import', [ProductController::class, 'import'])
-        ->name('admin.products.import.store');
-        
         Route::resource('products', ProductController::class)->names('admin.products');
 
     });

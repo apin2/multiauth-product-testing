@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ImportProductsRequest;
-use App\Jobs\ImportProductsJob;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -110,32 +108,4 @@ class ProductController extends Controller
             ->with('success', 'Product deleted successfully');
     }
 
-    public function showImportForm()
-    {
-        return view('admin.products.import');
-    }
-
-    public function import(ImportProductsRequest $request)
-    {
-        try {
-            $file = $request->file('file');
-            $fileName = 'temp/' . Str::random(40) . '.' . $file->getClientOriginalExtension();
-
-            Storage::put($fileName, file_get_contents($file));
-            $defaultImage = 'products/default-product.svg';
-            ImportProductsJob::dispatch($fileName, $defaultImage);
-
-            return redirect()
-                ->route('admin.products.index')
-                ->with('success', 'Product import started successfully. The products will be imported in the background.');
-        } catch (\Exception $e) {
-            if (isset($fileName) && Storage::exists($fileName)) {
-                Storage::delete($fileName);
-            }
-            
-            return redirect()
-                ->route('admin.products.import')
-                ->with('error', 'An error occurred while starting the import: ' . $e->getMessage());
-        }
-    }
 }
