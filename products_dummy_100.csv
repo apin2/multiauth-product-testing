@@ -1,0 +1,101 @@
+name,description,price,image,category,stock
+Product 1,Dummy description for product 1,110.5,,Fashion,3
+Product 2,Dummy description for product 2,121.0,,Home Appliances,6
+Product 3,Dummy description for product 3,131.5,,Furniture,9
+Product 4,Dummy description for product 4,142.0,,Kitchen,12
+Product 5,Dummy description for product 5,152.5,,Office,15
+Product 6,Dummy description for product 6,163.0,,Toys,18
+Product 7,Dummy description for product 7,173.5,,Electronics,21
+Product 8,Dummy description for product 8,184.0,,Fashion,24
+Product 9,Dummy description for product 9,194.5,,Home Appliances,27
+Product 10,Dummy description for product 10,205.0,,Furniture,30
+Product 11,Dummy description for product 11,215.5,,Kitchen,33
+Product 12,Dummy description for product 12,226.0,,Office,36
+Product 13,Dummy description for product 13,236.5,,Toys,39
+Product 14,Dummy description for product 14,247.0,,Electronics,42
+Product 15,Dummy description for product 15,257.5,,Fashion,45
+Product 16,Dummy description for product 16,268.0,,Home Appliances,48
+Product 17,Dummy description for product 17,278.5,,Furniture,51
+Product 18,Dummy description for product 18,289.0,,Kitchen,54
+Product 19,Dummy description for product 19,299.5,,Office,57
+Product 20,Dummy description for product 20,310.0,,Toys,60
+Product 21,Dummy description for product 21,320.5,,Electronics,63
+Product 22,Dummy description for product 22,331.0,,Fashion,66
+Product 23,Dummy description for product 23,341.5,,Home Appliances,69
+Product 24,Dummy description for product 24,352.0,,Furniture,72
+Product 25,Dummy description for product 25,362.5,,Kitchen,75
+Product 26,Dummy description for product 26,373.0,,Office,78
+Product 27,Dummy description for product 27,383.5,,Toys,81
+Product 28,Dummy description for product 28,394.0,,Electronics,84
+Product 29,Dummy description for product 29,404.5,,Fashion,87
+Product 30,Dummy description for product 30,415.0,,Home Appliances,90
+Product 31,Dummy description for product 31,425.5,,Furniture,93
+Product 32,Dummy description for product 32,436.0,,Kitchen,96
+Product 33,Dummy description for product 33,446.5,,Office,99
+Product 34,Dummy description for product 34,457.0,,Toys,102
+Product 35,Dummy description for product 35,467.5,,Electronics,105
+Product 36,Dummy description for product 36,478.0,,Fashion,108
+Product 37,Dummy description for product 37,488.5,,Home Appliances,111
+Product 38,Dummy description for product 38,499.0,,Furniture,114
+Product 39,Dummy description for product 39,509.5,,Kitchen,117
+Product 40,Dummy description for product 40,520.0,,Office,120
+Product 41,Dummy description for product 41,530.5,,Toys,123
+Product 42,Dummy description for product 42,541.0,,Electronics,126
+Product 43,Dummy description for product 43,551.5,,Fashion,129
+Product 44,Dummy description for product 44,562.0,,Home Appliances,132
+Product 45,Dummy description for product 45,572.5,,Furniture,135
+Product 46,Dummy description for product 46,583.0,,Kitchen,138
+Product 47,Dummy description for product 47,593.5,,Office,141
+Product 48,Dummy description for product 48,604.0,,Toys,144
+Product 49,Dummy description for product 49,614.5,,Electronics,147
+Product 50,Dummy description for product 50,625.0,,Fashion,150
+Product 51,Dummy description for product 51,635.5,,Home Appliances,153
+Product 52,Dummy description for product 52,646.0,,Furniture,156
+Product 53,Dummy description for product 53,656.5,,Kitchen,159
+Product 54,Dummy description for product 54,667.0,,Office,162
+Product 55,Dummy description for product 55,677.5,,Toys,165
+Product 56,Dummy description for product 56,688.0,,Electronics,168
+Product 57,Dummy description for product 57,698.5,,Fashion,171
+Product 58,Dummy description for product 58,709.0,,Home Appliances,174
+Product 59,Dummy description for product 59,719.5,,Furniture,177
+Product 60,Dummy description for product 60,730.0,,Kitchen,180
+Product 61,Dummy description for product 61,740.5,,Office,183
+Product 62,Dummy description for product 62,751.0,,Toys,186
+Product 63,Dummy description for product 63,761.5,,Electronics,189
+Product 64,Dummy description for product 64,772.0,,Fashion,192
+Product 65,Dummy description for product 65,782.5,,Home Appliances,195
+Product 66,Dummy description for product 66,793.0,,Furniture,198
+Product 67,Dummy description for product 67,803.5,,Kitchen,1
+Product 68,Dummy description for product 68,814.0,,Office,4
+Product 69,Dummy description for product 69,824.5,,Toys,7
+Product 70,Dummy description for product 70,835.0,,Electronics,10
+Product 71,Dummy description for product 71,845.5,,Fashion,13
+Product 72,Dummy description for product 72,856.0,,Home Appliances,16
+Product 73,Dummy description for product 73,866.5,,Furniture,19
+Product 74,Dummy description for product 74,877.0,,Kitchen,22
+Product 75,Dummy description for product 75,887.5,,Office,25
+Product 76,Dummy description for product 76,898.0,,Toys,28
+Product 77,Dummy description for product 77,908.5,,Electronics,31
+Product 78,Dummy description for product 78,919.0,,Fashion,34
+Product 79,Dummy description for product 79,929.5,,Home Appliances,37
+Product 80,Dummy description for product 80,940.0,,Furniture,40
+Product 81,Dummy description for product 81,950.5,,Kitchen,43
+Product 82,Dummy description for product 82,961.0,,Office,46
+Product 83,Dummy description for product 83,971.5,,Toys,49
+Product 84,Dummy description for product 84,982.0,,Electronics,52
+Product 85,Dummy description for product 85,992.5,,Fashion,55
+Product 86,Dummy description for product 86,1003.0,,Home Appliances,58
+Product 87,Dummy description for product 87,1013.5,,Furniture,61
+Product 88,Dummy description for product 88,1024.0,,Kitchen,64
+Product 89,Dummy description for product 89,1034.5,,Office,67
+Product 90,Dummy description for product 90,1045.0,,Toys,70
+Product 91,Dummy description for product 91,1055.5,,Electronics,73
+Product 92,Dummy description for product 92,1066.0,,Fashion,76
+Product 93,Dummy description for product 93,1076.5,,Home Appliances,79
+Product 94,Dummy description for product 94,1087.0,,Furniture,82
+Product 95,Dummy description for product 95,1097.5,,Kitchen,85
+Product 96,Dummy description for product 96,1108.0,,Office,88
+Product 97,Dummy description for product 97,1118.5,,Toys,91
+Product 98,Dummy description for product 98,1129.0,,Electronics,94
+Product 99,Dummy description for product 99,1139.5,,Fashion,97
+Product 100,Dummy description for product 100,1150.0,,Home Appliances,100
